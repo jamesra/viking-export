@@ -1,105 +1,129 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-  <title>Viking Network Visualization</title>
+    <title>Viking File Exporter</title>
 
-  <link rel="stylesheet" href="./alabaster.css" type="text/css"></link>
-  <link rel="stylesheet" href="./pygments.css" type="text/css"></link>
+    <link rel="stylesheet" href="./alabaster.css" type="text/css" /></link>
+    <link rel="stylesheet" href="./pygments.css" type="text/css" /></link>
 
-  <script src="source.js"></script>
+    <script src="source.js"></script>
 </head>
 
 <div class="document">
 
-<body>
+    <body>
 
-<h1>Network Visualization</h1>
+        <h1>Viking File Exporter</h1>
 
-<p>
-The Viking web services can export files for use in external tools.
-</p>
+        <p>
+            The Viking web services can export files for use in external tools.
+        </p>
 
-<h2>Prerequisites</h2>
+        <h2>Prerequisites</h2>
 
-<p>
-For graph visualization we recommend using
-<a href="http://tulip.labri.fr/">Tulip</a> and the TLP file format. We
-also provide .dot files for use with
-<a href="http://www.graphviz.org/">Graphviz</a>.
-</p>
+        <p>
+            For graph visualization we recommend using
+            <a href="http://tulip.labri.fr/">Tulip</a> and the TLP file format. We
+            also provide .dot files for use with
+            <a href="http://www.graphviz.org/">Graphviz</a>.
+        </p>
 
-<h2>Export</h2>
+        <h2>Export</h2>
 
-<p>
-<strong>Volume:</strong>
-<select id="volumeSelect">
-  <option value="RC1">RC1</option>
-  <option value="RC2">RC2</option>
-  <option value="RC1Marshak">RC1Marshak</option>
-  <option value="RPC1">RPC1</option>
-  <option value="webdev_RC1Test">RC1Test</option>
-</select>
-</p>
+        <p>
+            <strong>Volume:</strong>
+            <select id="volumeSelect">
+                <option value="RC1Test">RC1Test</option>
+                <option value="RC1">RC1</option>
+                <option value="RC2">RC2</option>
+                <option value="RC1Marshak">RC1Marshak</option>
+                <option value="RPC1">RPC1</option>
+                <option value="webdev_RC1Test">RC1Test</option>
+            </select>
+        </p>
 
-<p>
-<strong>Report type:</strong>
-<select id="reportTypeSelect" onchange=onReportTypeChanged()>
-  <option value="network">Neuron Connectivity Network</option>
-  <option value="motif">Motif Connectivity</option>
-  <option value="morphology">Morphology</option>
-</select>
-</p>
+        <p>
+            <strong>Report type:</strong>
+            <select id="reportTypeSelect" onchange=onReportTypeChanged()>
+                <option value="network">Neuron Connectivity Network</option>
+                <option value="motif">Motif Connectivity</option>
+                <option value="morphology">Morphology</option>
+            </select>
+        </p>
 
-<p id="fileFormat">
-<strong>Export File Format:</strong>
-<select id="formatSelect">
-  <option value="tlp">Tulip</option>
-  <option value="dot">Graphviz</option>
-</select>
-</p>
+        <p id="fileFormat">
+            <strong>Export File Format:</strong>
+            <select id="formatSelect">
+                <option value="tlp">Tulip</option>
+                <option value="dot">Graphviz</option>
+            </select>
+        </p>
 
-<div id="networkParams">
-  <p>
-  <strong>Cell ID(s):</strong>
-  <input id="networkCellId" type="text" onchange=onNetworkCellIDsChanged()></input>
-  Press enter.
-  <br />
-  ID(s) of the cell(s) you wish to visualize. Leave blank for all cells, or Separate multiple cells IDs with commas. For example: <em>1234, 5678</em>
-  </p>
 
-  <p id="hopsP" style="display:none">
-  <strong>Hops:</strong>
-  <input id="networkHops" type="number" min="0" max="15" value="0"></input>
-  <br />
-  Degrees of seperation to include additional neurons in graph. Zero to include only the specified cells.
-  </p>
-</div>
+        <div id="networkParams">
 
-<div id="motifParams" style="display:none">
-  
-</div>
+            <p>
+                ID(s) of the cell(s) you wish to visualize. <br />
+                Leave blank for all cells. <br />
+                Place multiple cell IDs on seperate lines or separate with commas. For example: <em>1234, 5678</em> <br />
+                Put OData subqueries on seperate lines <br />
+                <strong>Cell ID(s):</strong>
+                <textarea id="networkCellId" type="text" onchange=onNetworkCellIDsChanged() rows="8"></textarea>
+                <br />
+            </p>
 
-<div id="morphologyParams" style="display:none">
-  <p>
-  <strong>Cell ID(s):</strong>
-  <input id="morphoCellId" type="text"></input>
-  Press enter.
-  <br />
-  ID(s) of the cell(s) you wish to visualize. Separate multiple cells IDs with commas. For example: <em>1234, 5678</em>
-  </p>
-</div>
+            <p id="hopsP" style="display:none">
+                <strong>Hops:</strong>
+                <input id="networkHops" type="number" min="0" max="15" value="0"/>
+                <br />
+                Degrees of seperation to include additional neurons in graph. Zero to include only the specified cells.
+            </p>
 
-<p>
-<button type="button" onclick=onSubmitClicked()>Export</button>
-</p>
+            <p>
+                <b>OR</b> upload a text file containing either ID numbers or OData queries on each line.<br />
+                <input id="network_ids_file" type="file" title="Upload text file" /><br />
+                <button type="submit" id="submit_network_ids_file" onclick=onSubmitNetworkFileClicked()>Submit File</button><br />
+            </p>
+        </div>
 
-<img id="networkImg" src="network.png"></img>
-<img id="motifImg" src="motif.png" style="display:none"></img>
-<img id="morphologyImg" src="morphology.png" style="display:none"></img>
+        <div id="motifParams" style="display:none">
 
-</body>
+        </div>
+
+        <div id="morphologyParams" style="display:none">
+            <p>
+                ID(s) of the cell(s) you wish to visualize. <br />
+                Leave blank for all cells. <br />
+                Place multiple cell IDs on seperate lines or separate with commas. For example: <em>1234, 5678</em> <br />
+                Put OData subqueries on seperate lines <br />
+                <strong>Cell ID(s):</strong>
+                <textarea id="morphoCellId" type="text"  rows="8"></textarea>
+                <br />
+            </p>
+
+            <p>
+                <b>OR</b> upload a text file containing either ID numbers or OData queries on each line.<br />
+                <input id="morpho_ids_file" type="file" title="Upload text file"/>
+                <button type="submit" id="submit_morpho_ids_file" onclick=onSubmitMorphoFileClicked()>Submit File</button><br />
+            </p>
+        </div>
+
+        <p>
+            <button type="button" onclick=onSubmitClicked()>Export</button>
+        </p>
+
+        <p>
+            Status:<br />
+            <textarea id="messages" type="text" rows="8" cols="80"></textarea>
+        </p>
+
+        <img id="networkImg" src="network.png" /></img>
+        <img id="motifImg" src="motif.png" style="display:none" /></img>
+        <img id="morphologyImg" src="morphology.png" style="display:none" /></img>
+
+    </body>
 </div>
 
 </html>
