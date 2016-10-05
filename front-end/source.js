@@ -1,11 +1,11 @@
-var BASE_URL = "http://webdev.connectomes.utah.edu/";
+var BASE_URL = "http://websvc1.connectomes.utah.edu/";
 var INTRO = "http://";
 var DOMAIN = ".connectomes.utah.edu/";
 var POST_XHR = null;
 
 
 function buildIDListString(id_string) {
-    var tokens = id_string.split(/\s+/g);
+    var tokens = id_string.split(/\n+/g);
 
     formatted_output_array = [];
     for (var i = 0; i < tokens.length; i++) {
