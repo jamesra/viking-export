@@ -150,12 +150,6 @@ function onSubmitClicked() {
       query += "&hops=" + hops;
     }
   }
-
-  else if (reportType == "motif") {
-    query += "s/";
-    query += getFormatType();
-  }
-
   else if (reportType == "morphology") {
     var cellIDs = document.getElementById("morphoCellId").value;
     if (cellIDs)
