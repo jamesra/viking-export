@@ -38,7 +38,7 @@
                 <option value="RC1">RC1</option>
                 <option value="RC2">RC2</option>
                 <option value="NeitzTemporalMonkey">Neitz Temporal Monkey</option>
-                <option value="NeitzInferiorMonkey">Neitz Temporal Monkey</option>
+                <option value="NeitzInferiorMonkey">Neitz Inferior Monkey</option>
                 <option value="RPC1">RPC1</option>
                 <option value="RC1Marshak">RC1Marshak</option>
                 <option value="webdev_RC1Test">RC1Test</option>
@@ -49,7 +49,7 @@
             <strong>Report type:</strong>
             <select id="reportTypeSelect" onchange=onReportTypeChanged()>
                 <option value="network">Neuron Connectivity Network</option>
-                <option value="motifs">Motif Connectivity</option>
+                <option value="motif">Motif Connectivity</option>
                 <option value="morphology">Morphology</option>
             </select>
         </p>
@@ -66,6 +66,11 @@
 
 
         <div id="networkParams">
+            <p id="hopsP">
+                <strong>Hops:</strong>
+                <input id="networkHops" type="number" min="0" max="15" value="0" />
+                Degrees of seperation to include additional neurons in graph. Zero to include only the specified cells.
+            </p>
 
             <p>
                 ID(s) of the cell(s) you wish to visualize. <br />
@@ -77,12 +82,7 @@
                 <br />
             </p>
 
-            <p id="hopsP" style="display:none">
-                <strong>Hops:</strong>
-                <input id="networkHops" type="number" min="0" max="15" value="0"/>
-                <br />
-                Degrees of seperation to include additional neurons in graph. Zero to include only the specified cells.
-            </p>
+           
 
             <p>
                 <b>OR</b> upload a text file containing either ID numbers or OData queries on each line.<br />
@@ -96,6 +96,12 @@
         </div>
 
         <div id="morphologyParams" style="display:none">
+            <p id="stickMorphologyP">
+                <strong>Show Stick Figure:</strong>
+                <input id="stickMorphology" type="checkbox" name="stickMorphology" />
+                Stick morphology shows only process terminations and branch points.
+            </p>
+
             <p>
                 ID(s) of the cell(s) you wish to visualize. <br />
                 Leave blank for all cells. <br />
@@ -111,7 +117,9 @@
                 <input id="morpho_ids_file" type="file" title="Upload text file"/>
                 <button type="submit" id="submit_morpho_ids_file" onclick=onSubmitMorphoFileClicked()>Submit File</button><br />
             </p>
-        </div>
+
+            
+        </div> 
 
         <p>
             <button type="button" onclick=onSubmitClicked()>Export</button>

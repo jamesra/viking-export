@@ -3,6 +3,15 @@ var INTRO = "http://";
 var DOMAIN = ".connectomes.utah.edu/";
 var POST_XHR = null;
 
+DAEFormat = Object.freeze({ Value: 'DAE', Text: 'DAE: Collada 3D Mesh' });
+TLPFormat = Object.freeze({ Value: 'TLP', Text: 'TLP: Tulip' });
+DOTFormat = Object.freeze({ Value: 'DOT', Text: 'DOT: Graphviz' });
+JSONFormat = Object.freeze({ Value: 'JSON', Text: 'JSON: Javascript Object Notation' });
+
+var MorphologyFormats = [DAEFormat, TLPFormat];
+var NetworkFormats = [TLPFormat, DOTFormat, JSONFormat];
+var MotifFormats = [TLPFormat, DOTFormat, JSONFormat];
+
 
 function buildIDListString(id_string) {
     var tokens = id_string.split(/\n+/g);
@@ -13,7 +22,7 @@ function buildIDListString(id_string) {
         formatted_output_array.push(formatted_token);
     }
      
-    return formatted_output_array.join();
+    return formatted_output_array.join(';');
 }
 
 function getReportType()
@@ -97,15 +106,35 @@ function onReportTypeChanged() {
   selectedReportTypeControls.style.display = "inline";
 
   var reportType = reportTypeSelect.value;
-  var dotOption = document.getElementById("fileFormat");
-  if (reportType == "morphology") {
-    // You can't choose this for Morphology export
-    //dotOption.style.display = "none";
+  SetFormatOptions(reportType);
+}
+
+function SetFormatOptions(reportType)
+{
     var formatSelect = document.getElementById("formatSelect");
-  } else {
-    // You can for everything else!
-    dotOption.style.display = "inline";
-  }
+    var validFormatArray = GetFormatOptionsArray(reportType);
+    
+    for(var i = 0; i < validFormatArray.length; i++)
+    {
+        var option = document.createElement("option");
+        option.text = validFormatArray[i].Text;
+        option.value = validFormatArray[i].Value;
+        formatSelect.options.add(option);
+    }
+}
+
+function GetFormatOptionsArray(reportType)
+{
+    switch (reportType) {
+        case "network":
+            return NetworkFormats;
+        case "motif":
+            return MotifFormats;
+        case "morphology":
+            return MorphologyFormats;
+        default:
+            return [];
+    }
 }
 
 function onNetworkCellIDsChanged() {
@@ -156,6 +185,10 @@ function onSubmitClicked() {
         cellIDs = buildIDListString(cellIDs);
 
     query += "?id=" + cellIDs;
+
+    var ShowStick = document.getElementById("stickMorphology").checked;
+    if (ShowStick)
+        query += "&Stick=1";
   }
 
   console.log(query);
